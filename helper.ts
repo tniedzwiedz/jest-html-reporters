@@ -26,6 +26,7 @@ interface IAddAttachParams {
   description: string | object;
   context?: any;
   bufferFormat?: string;
+  fileCustomName?: string;
 }
 
 type TAttachObject = {
@@ -43,6 +44,7 @@ export const addAttach = async ({
   description: descriptionRaw,
   context,
   bufferFormat = 'jpg',
+  fileCustomName,
 }: IAddAttachParams) => {
   const description = getSerializableContent(descriptionRaw);
 
@@ -55,7 +57,11 @@ export const addAttach = async ({
     return;
   }
   const createTime = Date.now();
-  const fileName = generateRandomString();
+  var fileName;
+  if (!fileCustomName)
+    fileName = generateRandomString();
+  else
+    fileName = fileCustomName;
   if (typeof attach === 'string') {
     const attachObject: TAttachObject = {
       createTime,
